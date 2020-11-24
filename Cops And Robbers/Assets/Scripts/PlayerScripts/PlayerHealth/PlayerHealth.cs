@@ -17,6 +17,7 @@ namespace Me.DerangedSenators.CopsAndRobbers
         public float maxHealth = 100f;
         public float currentHealth;
         public HealthBar healthBar;
+        private PlayerIdentifier pID;
         
         /// <summary>
         /// At the start of the project the player's health will equal to the max health
@@ -25,6 +26,7 @@ namespace Me.DerangedSenators.CopsAndRobbers
         {
             currentHealth = maxHealth;
             healthBar.SetMaxHealth(maxHealth);
+            pID = gameObject.GetComponent<PlayerIdentifier>();
         }
 
         /// <summary>
@@ -62,6 +64,16 @@ namespace Me.DerangedSenators.CopsAndRobbers
         {
             Destroy(gameObject);
         }
+
+        public PlayerIdentifier GetPlayerIdentifier() {
+            return pID;
+        }
+
+        public float GetCurrentHealth()
+        {
+            return currentHealth;
+        }
+
     }
 }
 

@@ -16,6 +16,7 @@ namespace Me.DerangedSenators.CopsAndRobbers
         public float damage = 10f;      //damage caused on each attack
         private State state;            //attack or normal states
         private float attackOffset;
+        private int[] playersHit;
 
         //Enum object State: contains the states player can be in. Used for attack animation.
         private enum State
@@ -60,8 +61,17 @@ namespace Me.DerangedSenators.CopsAndRobbers
                 foreach (Collider2D enemy in enemiesHit)
                 {
                     enemy.GetComponent<PlayerHealth>().Damage(damage); //attack the enemy
+
+                    for (int i = 0; i < enemiesHit.Length; i++) {
+                        playersHit[i] = enemy.GetComponent<PlayerHealth>().GetPlayerIdentifier().GetPlayerID();
+                    }
                 }
             }
+        }
+
+        public int[] getPlayersHit() 
+        {
+            return playersHit;
         }
 
         /// <summary>
@@ -94,5 +104,6 @@ namespace Me.DerangedSenators.CopsAndRobbers
         public Vector3 GetAttackPoint() {
             return attackPosition;
         }
+
     }
 }

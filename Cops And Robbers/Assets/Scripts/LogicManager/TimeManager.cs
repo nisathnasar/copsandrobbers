@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TimeManager : MonoBehaviour
 {
     private float currentTime = 0f;
-    private float startingTime = 120f;
+    private float startingTime = 300f; //5 minutes
 
     [SerializeField] Text countdownText;
 
@@ -23,7 +23,8 @@ public class TimeManager : MonoBehaviour
         
         countdownText.text = minutes + ":" + seconds;
         if (currentTime <= 0) 
-        { 
+        {
+            ResetTimer();
             //load roundbreak scene
         }
     }
@@ -33,6 +34,13 @@ public class TimeManager : MonoBehaviour
     /// </summary>
     public void EndTimer() 
     {
+        currentTime = startingTime;
+    }
+
+    /// <summary>
+    /// Reset the timer back to start time.
+    /// </summary>
+    public void ResetTimer() {
         currentTime = startingTime;
     }
 }

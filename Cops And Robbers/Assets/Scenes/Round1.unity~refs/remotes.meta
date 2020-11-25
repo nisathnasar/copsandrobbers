@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< refs/remotes/upstream/main
 guid: 79dbeaee42ef9ee44aef2b4fe1372920
+=======
+guid: 18ab6a9ff2759d746a572cfb4b0ce79e
+>>>>>>> Timer 5 minutes
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

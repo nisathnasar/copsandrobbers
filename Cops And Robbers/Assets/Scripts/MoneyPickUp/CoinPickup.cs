@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net.Mime;
 using UnityEngine;
@@ -32,6 +33,7 @@ namespace Me.DerangedSenators.CopsAndRobbers
             //At the start of the game the text will be turned off
             coinText.gameObject.SetActive(false);
             moneyManager = FindObjectOfType<MoneyManager>();
+            Debug.Log("initalised coin pick up script");
         }
 
         /// <summary>
@@ -52,10 +54,14 @@ namespace Me.DerangedSenators.CopsAndRobbers
         /// <param name="collision">The collision component of the object that is colliding with this object?</param>
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if(collision.gameObject.name.Equals("Cop"))
+            if(collision.gameObject.name.Equals("Player(Clone)")) 
             {
-                coinText.gameObject.SetActive(true);
-                isPickUpAllowed = true;
+                Debug.Log("collided");
+                //if (isLocalPlayer)
+                {
+                    coinText.gameObject.SetActive(true);
+                    isPickUpAllowed = true;
+                }
             }
         }
 
@@ -65,16 +71,20 @@ namespace Me.DerangedSenators.CopsAndRobbers
         /// <param name="collision">The collision component of the object that is colliding with this object?</param>
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.gameObject.name.Equals("Cop"))
+            if (collision.gameObject.name.Equals("Player(Clone)"))
             {
-                coinText.gameObject.SetActive(false);
-                isPickUpAllowed = false;
+                //if(isLocalPlayer)
+                {
+                    coinText.gameObject.SetActive(false);
+                    isPickUpAllowed = false;
+                }
             }
         }
 
         /// <summary>
         /// This fucntion removes the object when it is picked up
         /// </summary>
+        //[Command]
         private void PickUp()
         {
             moneyManager.CollectMoney();

@@ -4,14 +4,11 @@ using System.Collections.Generic;
 using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.UI;
-/*
- * This script is responsible for picking up the coin and Informing the user to use "E" Key / 
 
-@author Peter
-*/
 namespace Me.DerangedSenators.CopsAndRobbers
 {
-    public class CoinPickup : MonoBehaviour
+    /// <summary> This Script is responsible for picking up coins </summary>
+    public class CoinPickup : NetworkBehaviour
     {
         /// <summary>
         /// Variable responsable for the text 
@@ -42,7 +39,7 @@ namespace Me.DerangedSenators.CopsAndRobbers
         private void Update()
         {
             //checking if user is allowed to pick up the coin && if the user pressed "E"
-            if (isPickUpAllowed && Input.GetKeyDown(KeyCode.E))
+            if (isPickUpAllowed && Input.GetKeyDown(KeyCode.E) && isLocalPlayer())
             {
                 PickUp();
             }

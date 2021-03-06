@@ -9435,7 +9435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38cd4be31ca2cf749aaa603df5397807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moneyManagerGO: {fileID: 0}
+  moneyManagerGO: {fileID: 845413859}
   countdownText: {fileID: 1139827234}
   _roundManager: {fileID: 0}
   endOfRoundText: {fileID: 0}

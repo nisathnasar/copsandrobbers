@@ -38,21 +38,26 @@ namespace Me.DerangedSenators.CopsAndRobbers
         private bool round1;
         private bool round2;
         private bool round3;
-        private float freezeTime;
-        private float round1Time;
-        private float round2Time;
-        private float round3Time;
-        private float breakTime;
+        [SerializeField]
+        private float freezeTime = 5f;
+        [SerializeField]
+        private float round1Time = 40f;
+        [SerializeField]
+        private float round2Time = 40f;
+        [SerializeField]
+        private float round3Time = 40f;
+        [SerializeField]
+        private float breakTime = 10f;
         
         void Start()
         {
-            freezeTime = 5f;
+            //freezeTime = 5f;
             currentTime = freezeTime;
             freeze1 = true;
-            round1Time = 40f;
-            round2Time = 40f;
-            round3Time = 40f;
-            breakTime = 10f;
+            //round1Time = 40f;
+            //round2Time = 40f;
+            //round3Time = 40f;
+            //breakTime = 10f;
             breakCanvas.gameObject.SetActive(false);
             freezeCanvas.gameObject.SetActive(false);
         }
@@ -64,7 +69,7 @@ namespace Me.DerangedSenators.CopsAndRobbers
             //disable movement in the beginning
             if (freeze1)
             {
-                Player.localPlayer.GetComponent<PlayerMovement>().enabled = false;  //disable movement
+                Player.localPlayer.GetComponent<PlayerMovement>().enabled = false;  //disable movement TODO disable attack as well
                 freezeCanvas.gameObject.SetActive(true);
                 mainTimerCanvas.gameObject.SetActive(false);
             }
@@ -73,138 +78,139 @@ namespace Me.DerangedSenators.CopsAndRobbers
             {
                 breakTimerText.text = countdownText.text;
             }
+            else if (!breakRound1 && !breakRound2)
+            {
+                breakCanvas.gameObject.SetActive(false);
+            }
 
             if (freeze1 || freeze2 || freeze3)
             {
                 freezeTimer.text = countdownText.text;
             }
-            
-            
-            if (currentTime <= 0) //timers ended
+
+
+            if (!(currentTime <= 0)) return;
+            //currentTime = startingTime;
+            //currentTime = round2Time;
+
+            //This if statement disables freeze1 and starts round1, sets timer to round1timer and loads round1.
+            if (freeze1) //round 1
             {
-                //currentTime = startingTime;
-                //currentTime = round2Time;
+                freeze1 = false;
+                round1 = true;
+                currentTime = round1Time;
+                Debug.Log("current counting round1 time");
+                    
+                _roundManager.LoadRound();
 
-                //This if statement disables freeze1 and starts round1, sets timer to round1timer and loads round1.
-                if (freeze1) //round 1
-                {
-                    freeze1 = false;
-                    round1 = true;
-                    currentTime = round1Time;
-                    Debug.Log("current counting round1 time");
+                Player.localPlayer.GetComponent<PlayerMovement>().enabled = true;   //enable movement
                     
-                    _roundManager.LoadRound();
+                freezeCanvas.gameObject.SetActive(false);
+                mainTimerCanvas.gameObject.SetActive(true);
+            }
+            //This if statement disables round1, enables break1 and sets timer to break time.
+            else if (round1) //break
+            {
+                round1 = false;
+                breakRound1 = true;
+                currentTime = breakTime;
+                Debug.Log("current counting breakround1 time");
+                    
+                Player.localPlayer.GetComponent<PlayerMovement>().enabled = false; //disable movement
+                    
+                breakCanvas.gameObject.SetActive(true);
+                endOfRoundText.text = $"End of round 1";
+            }
+            //This if statement disables break, enables freeze2 and sets timer to freeze time.
+            else if (breakRound1) //freeze2
+            {
+                breakRound1 = false;
+                freeze2 = true;
+                currentTime = freezeTime;
+                Debug.Log("current counting freeze2 time");
+                    
+                _roundManager.LoadRound();
+                    
+                breakCanvas.gameObject.SetActive(false);
+                freezeCanvas.gameObject.SetActive(true);
+                mainTimerCanvas.gameObject.SetActive(false);
+            }
 
-                    Player.localPlayer.GetComponent<PlayerMovement>().enabled = true;   //enable movement
+            else if (freeze2) //round2
+            {
+                freeze2 = false;
+                round2 = true;
+                currentTime = round2Time;
                     
-                    freezeCanvas.gameObject.SetActive(false);
-                    mainTimerCanvas.gameObject.SetActive(true);
-                }
-                //This if statement disables round1, enables break1 and sets timer to break time.
-                else if (round1) //break
-                {
-                    round1 = false;
-                    breakRound1 = true;
-                    currentTime = breakTime;
-                    Debug.Log("current counting breakround1 time");
+                Debug.Log("current counting round2 time");
                     
-                    Player.localPlayer.GetComponent<PlayerMovement>().enabled = false; //disable movement
+                Player.localPlayer.GetComponent<PlayerMovement>().enabled = true;   //enable movement
                     
-                    breakCanvas.gameObject.SetActive(true);
-                    endOfRoundText.text = $"End of round 1";
-                }
-                //This if statement disables break, enables freeze2 and sets timer to freeze time.
-                else if (breakRound1) //freeze2
-                {
-                    breakRound1 = false;
-                    freeze2 = true;
-                    currentTime = freezeTime;
-                    Debug.Log("current counting freeze2 time");
-                    
-                    _roundManager.LoadRound();
-                    
-                    breakCanvas.gameObject.SetActive(false);
-                    freezeCanvas.gameObject.SetActive(true);
-                    mainTimerCanvas.gameObject.SetActive(false);
-                }
+                freezeCanvas.gameObject.SetActive(false);
+                mainTimerCanvas.gameObject.SetActive(true);
+            }
 
-                else if (freeze2) //round2
-                {
-                    freeze2 = false;
-                    round2 = true;
-                    currentTime = round2Time;
+            else if (round2)//break
+            {
+                round2 = false;
+                breakRound2 = true;
+                currentTime = breakTime;
                     
-                    Debug.Log("current counting round2 time");
+                Debug.Log("current counting breakround2 time");
                     
-                    Player.localPlayer.GetComponent<PlayerMovement>().enabled = true;   //enable movement
+                Player.localPlayer.GetComponent<PlayerMovement>().enabled = false;  //disable movement
                     
-                    freezeCanvas.gameObject.SetActive(false);
-                    mainTimerCanvas.gameObject.SetActive(true);
-                }
+                breakCanvas.gameObject.SetActive(true);
+                endOfRoundText.text = $"End of round 2";
+            }
 
-                else if (round2)//break
-                {
-                    round2 = false;
-                    breakRound2 = true;
-                    currentTime = breakTime;
+            else if (breakRound2)//freeze3
+            {
+                breakRound2 = false;
+                freeze3 = true;
+                currentTime = freezeTime;
                     
-                    Debug.Log("current counting breakround2 time");
+                Debug.Log("current counting freeze3 time");
                     
-                    Player.localPlayer.GetComponent<PlayerMovement>().enabled = false;  //disable movement
+                _roundManager.LoadRound();
                     
-                    breakCanvas.gameObject.SetActive(true);
-                    endOfRoundText.text = $"End of round 2";
-                }
+                breakCanvas.gameObject.SetActive(false);
+                    
+                freezeCanvas.gameObject.SetActive(true);
+                mainTimerCanvas.gameObject.SetActive(false);
+            }
 
-                else if (breakRound2)//freeze3
-                {
-                    breakRound2 = false;
-                    freeze3 = true;
-                    currentTime = freezeTime;
+            else if (freeze3) //round3
+            {
+                freeze3 = false;
+                round3 = true;
+                currentTime = round3Time;
                     
-                    Debug.Log("current counting freeze3 time");
+                Debug.Log("current counting round3 time");
                     
-                    _roundManager.LoadRound();
+                Player.localPlayer.GetComponent<PlayerMovement>().enabled = true;   //enable movement
                     
-                    breakCanvas.gameObject.SetActive(false);
-                    
-                    freezeCanvas.gameObject.SetActive(true);
-                    mainTimerCanvas.gameObject.SetActive(false);
-                }
+                freezeCanvas.gameObject.SetActive(false);
+                mainTimerCanvas.gameObject.SetActive(true);
+            }
 
-                else if (freeze3) //round3
-                {
-                    freeze3 = false;
-                    round3 = true;
-                    currentTime = round3Time;
-                    
-                    Debug.Log("current counting round3 time");
-                    
-                    Player.localPlayer.GetComponent<PlayerMovement>().enabled = true;   //enable movement
-                    
-                    freezeCanvas.gameObject.SetActive(false);
-                    mainTimerCanvas.gameObject.SetActive(true);
-                }
-
-                else if (round3) //ending
-                {
-                    round3 = false;
-                    Player.localPlayer.GetComponent<PlayerMovement>().enabled = false;   //disable movement
-                    _roundManager.LoadRound();
-                }
+            else if (round3) //ending
+            {
+                round3 = false;
+                Player.localPlayer.GetComponent<PlayerMovement>().enabled = false;   //disable movement
+                _roundManager.LoadRound();
+            }
 
                 
                 
                 
                 
 
-                //if round state is ended, make Moneymanager singleton and load game over scene.
-                if (_roundManager.GetCurrentRound() == RoundManager.Round.ENDED)
-                {
-                    DontDestroyOnLoad(moneyManagerGO);
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);    
-                }
-                
+            //if round state is ended, make Moneymanager singleton and load game over scene.
+            if (_roundManager.GetCurrentRound() == RoundManager.Round.ENDED)
+            {
+                DontDestroyOnLoad(moneyManagerGO);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);    
             }
         }
 

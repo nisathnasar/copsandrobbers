@@ -55,7 +55,7 @@ namespace Me.DerangedSenators.CopsAndRobbers
             int x = 5;
             for (int i = 0; i < 20; ++i)
             {
-                GameObject moneyBagGo = Instantiate(moneyBagPrefab, new Vector3(x++, 0, 0), Quaternion.identity);
+                GameObject moneyBagGo = Instantiate(moneyBagPrefab, new Vector3(x++, -3, 0), Quaternion.identity);
                 NetworkServer.Spawn(moneyBagGo);
             }
         }

@@ -138,9 +138,11 @@ namespace Me.DerangedSenators.CopsAndRobbers
         /// </summary>
         public void RespawnForNewRound()
         {
-            enableComponents();
-            gameObject.GetComponent<CircleCollider2D>().enabled = false;
-            
+            if (!isAlive)
+            {
+                enableComponents();
+                gameObject.GetComponent<CircleCollider2D>().enabled = false;
+            }
         }
         
         
